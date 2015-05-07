@@ -18,32 +18,32 @@ class Fetcher(Greenlet):
 
 	def _fetch(self):
 		while True:
-			url = RedisUtils.get_url()
-			if not url:
-				Logging.error('Fetcher._fetch url is None, error')
+			task = RedisUtils.get_task()
+			if not task:
+				Logging.error('Fetcher._fetch task is None, error')
 				continue
-			content = self._request(url)
-			pass
-		pass
+			content = self._request(task)
+			task.set_content(content)
+			# dispatch task into queue
+			self.extract_queue.put(task)
 
-	def _request(self, url):
+	def _request(self, task):
 		header = HumanHeader.get_header()
 		try:
-			Logging.info('start to crawler %s' % url)
+			Logging.info('start to crawler %s' % task.cur_url)
 			if settings.TIMEOUT != 0:
-				content = requests.get(url,
+				content = requests.get(task.cur_url,
 				                       headers=header,
 				                       stream=True,
 				                       timeout=settings.TIMEOUT)
 			else:
-				content = requests.get(url,
+				content = requests.get(task.cur_url,
 				                       headers=header,
 				                       stream=True)
 		except Exception, e:
-			Logging.error('%s %s' % (url, str(e)))
+			Logging.error('%s %s' % (task.cur_url, str(e)))
 			return None
 		return content
-
 
 	def _run(self):
 		self._fetch()

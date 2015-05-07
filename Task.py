@@ -13,12 +13,16 @@ class Task:
 		self.cur_url = parent_url
 		self.crawl_time = datetime.datetime()
 		self.webkit = webkit
+		self.content = ''
 
 	def increase(self):
 		self.cur_depth += 1
 
 	def set_time(self, t):
 		self.crawl_time = t
+
+	def set_content(self, c):
+		self.content = c
 
 
 def serialize(obj):
