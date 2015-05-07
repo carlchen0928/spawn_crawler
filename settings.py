@@ -1,0 +1,8 @@
+__author__ = 'yiyu'
+
+FETCHER_GREENLET = 100
+EXTRACTER_PROCESS = 3
+WORKER_NAME = 'worker-1'
+REDIS_HOST = 'localhost'
+REDIS_PORT = 6379
+TIMEOUT = 0
