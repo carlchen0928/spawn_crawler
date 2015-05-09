@@ -9,5 +9,9 @@ r = redis.Redis(connection_pool=pool)
 
 
 def get_task():
+	"""
+
+	:rtype : object
+	"""
 	obj_str = r.blpop(settings.WORKER_NAME)
 	return Task.deserialize(obj_str)

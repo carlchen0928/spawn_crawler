@@ -25,7 +25,8 @@ class Fetcher(Greenlet):
 			content = self._request(task)
 			task.set_content(content)
 			# dispatch task into queue
-			self.extract_queue.put(task)
+			if task.content != '':
+				self.extract_queue.put(task)
 
 	def _request(self, task):
 		header = HumanHeader.get_header()
